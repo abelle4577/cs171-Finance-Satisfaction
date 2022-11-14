@@ -49,18 +49,47 @@ d3.csv("data/Consumer_Complaints.csv", (row) => {
     let values = Object.values(disputedData)
     let colors = ["red", "green"]
     let x = 100
-    let y = 100
-    let radius = 50
+    let y = 150
 
 
+    svg.selectAll("circle")
+        .data(keys)
+        .enter()
+        .append("circle")
+        .attr("cx", (d, i) => {
+            x += i * 100
+            return x
+        })
+        .attr("cy", y)
+        .attr("r", (d, i) => {
+            return (values[i] / 8000)
+        }
+        )
+        .attr("fill", (d, i) => {
+            return colors[i]
+        }
+        )
 
+    // add a title to the svg element that says "Do consumers feel that their complaints are resolved?'
 
+    svg.append("text")
+        .attr("x", 100)
+        .attr("y", 50)
+        .text("Do consumers feel that their complaints are resolved?")
+        .attr("font-size", "20px")
+        .attr("fill", "black")
+
+    // add text on the right side of the svg element that says a filter will be added
+    // we will add functionallity later to filter based on product, sub product or company
+
+    svg.append("text")
+        .attr("x", 450)
+        .attr("y", 150)
+        .text("*a filter will be added")
+        .attr("font-size", "20px")
+        .attr("fill", "black")
 
     
-
-
-
-
 
 })
 
