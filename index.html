@@ -18,6 +18,21 @@
 	<!-- DON'T WRITE CSS IN YOUR HTML LIKE WE DID HERE - THE INLINE CSS SHOULD HELP YOU TO UNDERSTAND THE BEHAVIOR OF THE ELEMENTS BETTER -
 		 WHEN SUBMITTING, WE ALWAYS EXPECT CLEAR SEPARATION OF HTML, CSS, AND JS INTO THE PROPER FILES -->
 	<body style="padding: 5vh">
+		<div class="row justify-content-center" style="background: goldenrod; height: 25vh;">
+			<div class="align-self-center">Customer Complaints and Satisfaction.
+			</div>
+		</div>
+		
+		<!-- For Demo Purpose -->
+		<div class="container py-5">
+			<h2 class="h3 font-weight-bold">What is the effect of customer satisfaction on  the behavior of predatory practices?</h2>
+			<div class="row">
+				<div class="col-lg-10 mb-4">
+					<p class="font-italic text-muted">An interactive website to visualize the trends of customer satisfaction against product type, corporation type, region, time of year, and resolutions. </p>
+				</div>
+		
+			</div>
+		</div>
 	<div class="container-fluid" style="border: thin solid grey; border-radius: 5px">
 		<div class="row justify-content-center" style="height: 12vh; background: #22223b;">
 			<div class="align-self-center">
@@ -36,12 +51,8 @@
 			<div class="col-6" style="background: #9A8C98">
 				<div class="row justify-content-center" style="height: 100%">
 					<div class="align-self-center">
-						<p style="text-align: center">
-							useful links:<br>
-							<a href="https://coolors.co/22223b-4a4e69-9a8c98-c9ada7-f2e9e4">color palettes</a><br>
-							<a href="https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3">color brewer</a><br>
-							(add your own)
-						</p>
+						<!-- create a div to add the graph to. Give it an id name of smile-chart -->
+						<div id="smile-chart"></div>
 					</div>
 				</div>
 			</div>
@@ -61,5 +72,6 @@
 
 	<!-- own js files -->
 	<script src="js/main.js"></script>
+	<script src="js/smiles.js"></script>
 	</body>
 </html>
