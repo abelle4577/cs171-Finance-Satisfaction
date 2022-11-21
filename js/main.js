@@ -118,6 +118,29 @@ d3.csv("data/Consumer_Complaints.csv", (row) => {
         .attr("d", outerArc)
         .style("fill", d => color(d.data.product))
 
+
+        // only show labels that are greater than 5%
+        // only show labels when the pie chart is hovered over
+        // show the product name and the percentage of complaints
+        // show the label on the outer arc
+
+    // g.selectAll(".outer-arc")
+    //     .append("text")
+    //     .attr("transform", d => {
+    //         let pos = label.centroid(d)
+    //         pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1)
+    //         return "translate(" + pos + ")"
+    //     })
+    //     .attr("dy", "0.35em")
+    //     .attr("text-anchor", d => midAngle(d) < Math.PI ? "start" : "end")
+    //     .text(d => {
+    //         if (d.data.count / data.length > 0.05) {
+    //             return d.data.product + " (" + Math.round(d.data.count / data.length * 100) + "%)"
+    //         }
+    //     })
+
+
+
     g.selectAll(".label")
         .data(pie(productData))
         .enter().append("g")
@@ -153,6 +176,57 @@ d3.csv("data/Consumer_Complaints.csv", (row) => {
         .attr("y", 9.5)
         .attr("dy", "0.32em")
         .text(d => d.product)
+    
+    // make the legend interactive
+    // we will use the legend elements to create a tooltip
+    // we will use the mouseover event to show the tooltip
+    // we will use the mouseout event to hide the tooltip
+    // we will use the mousemove event to move the tooltip
+    // not yet implemented
+
+
+    legend.on("mouseover", (event, d) => {
+        d3.select("#pie-chart")
+            .append("div")
+            .attr("id", "tooltip")
+            .style("left", event.pageX + 10 + "px")
+            .style("top", event.pageY - 25 + "px")
+            .style("display", "inline-block")
+            .html((d.product) + "<br>" + (d.count))
+    })
+    legend.on("mouseout", (d) => {
+        d3.select("#tooltip")
+            .style("display", "none")
+    })
+    // legend.on("mousemove", (event, d) => {
+    //     d3.select("#tooltip")
+    //         .style("left", event.pageX + 10 + "px")
+    //         .style("top", event.pageY - 25 + "px")
+    // })
+
+
+// when an item in the legend is clicked
+// we will use the product name to filter the data
+// this data will be used in smiles.js to change the circle size
+// create a global variable with the product name
+// this variable will be used in smiles.js to filter the data
+// store the product name in the global variable
+
+
+    // legend.on("click", (event, d) => {
+    //     let product = d.product
+    //     let filteredData = data.filter(d => d.product == product)
+    //     window.product = product
+    //     window.filteredData = filteredData
+    //     console.log(filteredData)
+    //     console.log(product)
+    //     console.log(window.product)
+    //     console.log(window.filteredData)
+    //     drawSmiles(filteredData)
+    // })
+
+
+
 
     // create a title
     // we will use the svg element to append a text element

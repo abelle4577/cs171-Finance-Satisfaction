@@ -36,7 +36,7 @@
 	<div class="container-fluid" style="border: thin solid grey; border-radius: 5px">
 		<div class="row justify-content-center" style="height: 12vh; background: #22223b;">
 			<div class="align-self-center">
-				<h1 style="color: #F2E9E4">Customer Satisfaction</h1>
+				<h1 style="color: #F2E9E4">Which products have the most complaints?</h1>
 			</div>
 		</div>
 		<div class="row" style="height: 70vh">
@@ -51,6 +51,24 @@
 			<div class="col-6" style="background: #9A8C98">
 				<div class="row justify-content-center" style="height: 100%">
 					<div class="align-self-center">
+						<!-- add a drop down menu to select a product to filter by -->
+						<!-- the products are Mortgage, Debt collection, Credit reporting, Credit card, Bank account or service, Consumer Loan
+						Student loan, Payday loan, Money transfers, Prepaid card, Other financial service, Virtual currency -->
+						<select id="product">
+							<option value="All">All</option>
+							<option value="Mortgage">Mortgage</option>
+							<option value="Debt collection">Debt collection</option>
+							<option value="Credit reporting">Credit reporting</option>
+							<option value="Credit card">Credit card</option>
+							<option value="Bank account or service">Bank account or service</option>
+							<option value="Consumer Loan">Consumer Loan</option>
+							<option value="Student loan">Student loan</option>
+							<option value="Payday loan">Payday loan</option>
+							<option value="Money transfers">Money transfers</option>
+							<option value="Prepaid card">Prepaid card</option>
+							<option value="Other financial service">Other financial service</option>
+							<option value="Virtual currency">Virtual currency</option>
+						</select>
 						<!-- create a div to add the graph to. Give it an id name of smile-chart -->
 						<div id="smile-chart"></div>
 					</div>
