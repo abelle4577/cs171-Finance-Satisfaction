@@ -2,14 +2,14 @@
 *          MapVis          *
 * * * * * * * * * * * * * */
 
-// make a cleopleth whose color depth per state indicate the number of complaints by the selected product in the drop-down
+// make a cloropleth whose color depth per state indicate the number of complaints by the selected product in the drop-down
 class MapVis {
 
     // not sure what other constructors should be used
-    constructor(parentElement, State, Product) {
+    constructor(parentElement, state, product) {
         this.parentElement = parentElement;
-        this.state = State;
-        this.product = Product;
+        this.state = state;
+        this.product = product;
         this.displayData = [];
 
         // parse date method
@@ -19,8 +19,14 @@ class MapVis {
     }
 
     initMap () {
+
+        
+
         // make margin conventions
         let vis = this;
+
+        console.log(vis.product)
+
 
         vis.margin = {top: 20, right: 20, bottom: 20, left: 20};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
@@ -36,6 +42,8 @@ class MapVis {
         vis.viewpoint = {'width': 975, 'height': 610};
         vis.zoom = vis.width / vis.viewpoint.width;
 
+        console.log(vis.height)
+
         // adjust map position
         vis.map = vis.svg.append("g") // group will contain all state paths
             .attr("class", "states")
@@ -45,7 +53,7 @@ class MapVis {
         vis.path = d3.geoPath();
 
         // Convert TopoJSON to GeoJSON (target object = 'states')
-        vis.usaGeoData = topojson.feature(vis.mapInfo, vis.mapInfo.objects.states).features
+        vis.usaGeoData = topojson.feature(vis.state, vis.state.objects.states).features
 
         vis.states = vis.map.selectAll("path")
             .data(vis.usaGeoData)
@@ -57,7 +65,7 @@ class MapVis {
             .attr("stroke", "black")
             .attr("stroke-width", 1.5)
 
-        console.log(vis.states)
+
 
         vis.wrangleData()
     }
@@ -66,95 +74,59 @@ class MapVis {
     wrangleData() {
         let vis = this
 
-
         // first, filter according to product type, init empty array
         let filteredData = [];
 
-        // if there is a selected product in the drop-down bar, need help here
-        if (Product == "Mortage") {
-            filteredData = vis.data.filter(d => d.Product == "Mortage");
+        let product = selectedCategory;
+        // d3.select("#product").property("value")
 
-        } else if (Product == "Debt collection") {
-            filteredData = vis.data.filter(d => d.Product == "Debt collection");
-           
-        } else if (Product == "Credit reporting") {
-
-            filteredData = vis.data.filter(d => d.Product == "Credit reporting");
-
-        } else if (Product == "Credit card") {
-
-            filteredData = vis.data.filter(d => d.Product == "Credit card");
+        // THE DATA IS NOT BEING FILTERED HERE
 
 
-        } else if (Product == "Bank account or service") {
-                
-            filteredData = vis.data.filter(d => d.Product == "Bank account or service");
-    
+        // if there is a selected product in the drop-down bar, filter the data
+        // only include data that matches the selected product
 
-        } else if (Product == "Consumer loan") {
-                
-                filteredData = vis.data.filter(d => d.Product == "Consumer loan");
-    
-        } else if (Product == "Student loan") {
-
-            filteredData = vis.data.filter(d => d.Product == "Student loan");
-
-
-        } else if (Product == "Payday loan") {
-
-            filteredData = vis.data.filter(d => d.Product == "Payday loan");
-
-        } else if (Product == "Money transfers") {
-
-            filteredData = vis.data.filter(d => d.Product == "Money transfers");
-
-
-        } else if (Product == "Prepaid card") {
-
-            filteredData = vis.data.filter(d => d.Product == "Prepaid card");
-
-
-        } else if (Product == "Other financial service") {
-            filteredData = vis.data.filter(d => d.Product == "Other financial service");
-
-        } else if (Product == "Virtual currency") {
-
-            filteredData = vis.data.filter(d => d.Product == "Virtual currency");
-
+        if (product !== "All") {
+            filteredData = vis.product.filter(d => d.Product === product)
+        } else {
+            filteredData = vis.Product
         }
+        
+        // prepare product data by grouping all rows by state
+        vis.productDataByState = d3.rollup(filteredData, v => v.length, d => d.State);
+        console.log(vis.productDataByState)
 
-        // prepare covid data by grouping all rows by state
-        let covidDataByState = Array.from(d3.group(filteredData, d => d.state), ([key, value]) => ({key, value}))
-
-        // have a look
-        // console.log(covidDataByState)
 
         // init final data structure in which both data sets will be merged into
         vis.stateInfo = []
 
-        // merge
-        covidDataByState.forEach(state => {
+        console.log(filteredData)
 
+        // merge
+        for (var state of vis.productDataByState.keys()) {
+            console.log(state);
+            console.log(vis.productDataByState[state])
             // get full state name
-            let stateName = nameConverter.getFullName(state.key)
+            let stateName = nameConverter.getFullName(state)
 
             // init counters
             let totalComplaints = 0;
 
             // calculate total complaints by summing up all the entries for each state
             state.value.forEach(entry => {
-                totalComplaints += +entry['new_case'];
+                totalComplaints += +entry['new_complaint'];
             });
 
             // populate the final data structure
             vis.stateInfo.push(
                 {
                     state: stateName,
-                    absComplaints: totalComplaints,
+                    absComplaints: totalComplaints
                 }
             )
-        })
+        }
 
+        console.log(vis.stateInfo)
         vis.updateMap()
     }
 
@@ -162,16 +134,20 @@ class MapVis {
     updateMap() {
         let vis = this;
         console.log("check")
+        console.log(vis.stateInfo)
 
         // make a color scale
         vis.colorScale = d3.scaleLinear()
             .range(["#FFFFFF", "#136D70"])
-            .domain([0, d3.max(vis.stateInfo, d => d[selectedCategory])]);
+            .domain([0, d3.max(vis.stateInfo, d => d.absComplaints)]);
+
+            console.log(d3.max(vis.stateInfo, d => d.absComplaints))
+            // idk y this is not working
 
         vis.states
             .attr("fill", d => {
                 let color = 'red'
-                console.log(d.properties.name)
+                // console.log(d.properties.name)
                 let state = d.properties.name
 
                 vis.stateInfo.forEach(d => {

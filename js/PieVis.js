@@ -11,7 +11,7 @@ class PieVis {
     initVis() {
         let vis = this;
 
-        vis.margin = {top: 20, right: 20, bottom: 20, left: 20};
+        vis.margin = {top: 10, right: 20, bottom: 20, left: 20};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -35,7 +35,7 @@ class PieVis {
 
       
         vis.color = d3.scaleOrdinal()
-            .range(d3.schemeSet3);
+            .range(["#9B40E0", "#5C887D", "#D9CCDD", "#5ACFCE","#82E37B", "#40B0A6", "#808944", "#5A0835", "#E802FA", "#99B3E4", "#7FD5B7", "##E1BE6A"]);
 
         console.log(vis.height, vis.width)
 
@@ -68,7 +68,7 @@ class PieVis {
         let vis = this;
 
         let pieGroup = vis.svg.append("g")
-            .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")");
+            .attr("transform", "translate(" + vis.width / 4 + "," + vis.height / 2 + ")");
 
         console.log(vis.displayData)
 
@@ -89,20 +89,46 @@ class PieVis {
                 .text(d => {
                     let percent = (d.data.value / vis.total) * 100;
                     if (percent > 10) {
-                        return percent.toFixed(1) + "%";
+                        return percent.toFixed(2) + "%";
                     }
                 } )
                 .style("font-size", "12px")
                 .attr("transform", d => "translate(" + vis.arc.centroid(d) + ")")
                 .style("text-anchor", "middle");
     
-        // create a legend
+        // create a legend for the pie chart
+        // the text for the legend is taken from the key of the displayData array
         let legend = pieGroup.selectAll(".legend")
-            .data(vis.color.domain())
+            .data(vis.displayData)
             .enter().append("g")
             .attr("class", "legend")
-            .attr("transform", (d, i) => "translate(0," + i * 20 + ")");
+            // x position should be 3/4 of the width
+            .attr("transform", (d, i) => "translate(" + vis.width * 0.45 + "," + ((i * 20)-120) + ")");
+
             
+
+
+        // add a colored square to the legend
+        legend.append("rect")
+            .attr("x", 0)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", vis.color);
+
+        // add the text to the legend
+        legend.append("text")
+            .attr("x", 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .text(d => {
+                return d.key + " (" + (100*(d.value/vis.total)).toFixed(2) + "%)";
+            });
+            
+        
+
+
+
 
               
     }
