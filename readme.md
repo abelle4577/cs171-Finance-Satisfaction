@@ -1,10 +1,6 @@
 <!-- make a title -->
 # Financial Product Satisfaction
 
-## IMPORTANT NOTE: GET THE DATA FILE FROM THIS LINK AND PUT IT IN THE data FOLDER BEFORE OPENING
-If the data folder does not exist in your directory, create one. The data file is too large to upload to github.
-https://www.kaggle.com/datasets/ashwinik/consumer-complaints-financial-products
-
 
 <!-- make a subtitle -->
 ## Data we are working with
@@ -38,3 +34,9 @@ The data provided in this data set includes the following columns:
 <!-- make a paragraph -->
 This is a paragraph.
 # cs171-Finance-Satisfaction
+
+## To run the code, download the repository and open the code direcotry in Webstorm. Then run the HTML file.
+Code is in the folder called code, and the logistical items like the video and process book are in the folder called documents.
+
+# Non obvious features
+There is a drop down menu to select grouping by a product. 
