@@ -1,6 +1,6 @@
 <!-- make a title -->
 # Financial Product Satisfaction
-
+https://abelle4577.github.io/cs171-Finance-Satisfaction/
 
 <!-- make a subtitle -->
 ## Data we are working with
